@@ -21,4 +21,5 @@ def index():
     return 'Currently the weather in '+city_name+' is '+temperature+' degrees and the sky is '+condition
 
 
-app.run(host='0.0.0.0', port=81, debug=True, use_reloader=True)
+#app.run(host='0.0.0.0', port=81, debug=True, use_reloader=True)
+app.run()
