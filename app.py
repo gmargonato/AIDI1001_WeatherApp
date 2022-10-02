@@ -17,9 +17,9 @@ def webhook():
     #Creates a responde and sends it back to Dialogflow
     return make_response(jsonify(send_results())) 
 
-def send_results(): 
+def send_results():
     #Build a request object 
-	req = request.get_json(force=True) 
+    req = request.get_json(force=True) 
 
 	#Fetch city name from Dialogflow
     city_name = req.get('queryResult').get('geo-city')
@@ -32,21 +32,19 @@ def send_results():
     condition = str(json_object['weather'][0]['main'])
 
 	#Returns the response 
-	speech = "Currently, temperature in " + city_name + " is " + temperature + " and the sky is/has " + condition
+    speech = "Currently, temperature in " + city_name + " is " + temperature + " degress Celcius and the sky is/has " + condition
     
     return {
         "speech": speech,
         "displayText": speech,
     }
 
+test_mode = 1
+port = int(os.environ.get("PORT", 5000))
+
 if __name__ == "main":
-    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
-
-    #app.run(
-    # debug=True, 
-    # use_reloader=True,
-    # host='0.0.0.0', 
-    # port=int(os.environ.get("PORT", 5000))
-    #)
-
+    if test_mode == 1:
+        app.run(debug=False, host='0.0.0.0', port=port)
+    else:
+        app.run(debug=True, use_reloader=True, host='0.0.0.0', port=port)
 
