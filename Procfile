@@ -1,2 +1,2 @@
 
-worker: gunicorn app:app
+worker: gunicorn app:app $PORT
