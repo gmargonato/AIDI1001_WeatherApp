@@ -1,6 +1,7 @@
 from crypt import methods
 from flask import Flask, render_template, request
 import requests
+import os
 
 app = Flask(__name__)
 
@@ -27,5 +28,5 @@ def render_results():
 #app.run(host='0.0.0.0', port=81, debug=True, use_reloader=True)
 
 if __name__ == "main":
-    app.run()
+    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
 
