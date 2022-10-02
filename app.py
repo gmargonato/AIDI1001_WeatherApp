@@ -15,9 +15,9 @@ def index():
 @app.route('/webhook', methods=['GET', 'POST']) 
 def webhook(): 
     #Creates a responde and sends it back to Dialogflow
-    return make_response(jsonify(send_results())) 
+    return make_response(jsonify(get_results())) 
 
-def send_results():
+def get_results():
     #Build a request object 
     req = request.get_json(force=True) 
 
@@ -39,7 +39,7 @@ def send_results():
         "displayText": speech,
     }
 
-test_mode = 1
+test_mode = 0
 port = int(os.environ.get("PORT", 5000))
 
 if __name__ == "main":
@@ -47,4 +47,3 @@ if __name__ == "main":
         app.run(debug=False, host='0.0.0.0', port=port)
     else:
         app.run(debug=True, use_reloader=True, host='0.0.0.0', port=port)
-
