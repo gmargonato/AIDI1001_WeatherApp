@@ -1,2 +1,2 @@
 
-worker: gunicorn app:app.py $PORT
+web: gunicorn app:app $PORT
