@@ -9,34 +9,34 @@ import os
 app = Flask(__name__)
 
 @app.route('/') 
-def index(): 
-	return 'Hello :)'
+def index():
+    return render_template('index.html')   
 
-@app.route('/webhook', methods=['GET', 'POST']) 
+@app.route('/webhook', methods=['POST']) 
 def webhook(): 
-    #Creates a responde and sends it back to Dialogflow
-    return make_response(jsonify(get_results())) 
 
-def get_results():
-    #Build a request object 
+    #Information received from Dialogflow
     req = request.get_json(force=True) 
+    query_result = req.get('queryResult')
 
-	#Fetch city name from Dialogflow
-    city_name = req.get('queryResult').get('geo-city')
+    #Get the city name
+    city_name = query_result.get('parameters').get('geo-city')
+    
+    #Make the request to Open Weather Map API
     my_api_key = '974b6905630d60c93952b5f4679b3da1'
     r = requests.get('https://api.openweathermap.org/data/2.5/weather?q='+city_name+'&appid='+my_api_key)
     
-    #Read the response from Weather API and parse the attributes
+    #Read the response and parse the attributes
     json_object = r.json()
     temperature = str(int(json_object['main']['temp']-273.15)) #converts from kelvin    
     condition = str(json_object['weather'][0]['main'])
 
 	#Returns the response 
-    speech = "Currently, temperature in " + city_name + " is " + temperature + " degress Celcius and the sky is/has " + condition
+    message = "Currently, temperature in " + city_name + " is " + temperature + " degress Celcius and the sky is/has " + condition
     
     return {
-        "speech": speech,
-        "displayText": speech,
+        "fulfillmentText": message,
+        "source": 'webhook'
     }
 
 test_mode = 0
