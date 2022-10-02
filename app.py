@@ -1,31 +1,35 @@
 from crypt import methods
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response, jsonify
 import requests
 import os
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return render_template('index.html')   
+@app.route('/') 
+def index(): 
+	return 'Hello :)'
 
-@app.route('/results', methods=['POST'])
-def render_results():
-    
-    city_name = request.form['city_name']
-    my_api_key = '974b6905630d60c93952b5f4679b3da1'
-    r = requests.get('https://api.openweathermap.org/data/2.5/weather?q='+city_name+'&appid='+my_api_key)
+@app.route('/webhook', methods=['GET', 'POST']) 
+def webhook(): 
+	# return response for webhooks
+	return make_response(jsonify(send_results())) 
 
-    #read the json object
-    json_object = r.json()
+def send_results(): 
+	# build a request object 
+	req = request.get_json(force=True) 
 
-    #get the attributes
-    temperature = str(int(json_object['main']['temp']-273.15)) #converts from kelvin    
-    condition = str(json_object['weather'][0]['main']        )
-    
-    return 'Currently, the weather in '+city_name+' is '+temperature+' degrees and the sky is '+condition
+	# fetch action from json 
+	action = req.get('queryResult').get('geo-city') 
 
-#app.run(host='0.0.0.0', port=81, debug=True, use_reloader=True)
+	# return a fulfillment response 
+	return {'fulfillmentText': 'This is a response from webhook.'} 
+
+#app.run(
+# host='0.0.0.0', 
+# port=int(os.environ.get("PORT", 5000)), 
+# debug=True, 
+# use_reloader=True
+#)
 
 if __name__ == "main":
     app.run(debug=False, host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
