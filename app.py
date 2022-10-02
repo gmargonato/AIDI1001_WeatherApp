@@ -10,7 +10,9 @@ app = Flask(__name__)
 
 @app.route('/') 
 def index():
-    return render_template('index.html')   
+    #Deprecated
+    #return render_template('index.html')   
+    return "Hello World! \nThe web form has been disabled - Please use the webhook instead!"
 
 @app.route('/webhook', methods=['POST']) 
 def webhook(): 
