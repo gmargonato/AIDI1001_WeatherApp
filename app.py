@@ -12,7 +12,10 @@ app = Flask(__name__)
 def index():
     #Deprecated
     #return render_template('index.html')   
-    return "Hello World! \nThe web form has been disabled - Please use the webhook instead!"
+    return jsonify(
+        student_name = 'Gabriel Oliveira',
+        student_id   = '200499674'
+    )
 
 @app.route('/webhook', methods=['POST']) 
 def webhook(): 
