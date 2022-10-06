@@ -37,7 +37,7 @@ def webhook():
     condition = str(json_object['weather'][0]['main'])
 
 	#Returns the response 
-    message = "Right now, temperature in " + city_name + " is " + temperature + " degress Celcius and the sky is/has " + condition
+    message = "Currently, temperature in " + city_name + " is " + temperature + " degress Celcius and the sky is/has " + condition
     
     return {
         "fulfillmentText": message,
